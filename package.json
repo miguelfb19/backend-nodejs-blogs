@@ -4,7 +4,8 @@
   "description": "Api RESTful del master en Frameworks para JS de Victor Robles",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "dev": "nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Miguel Fernandez",
