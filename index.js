@@ -4,6 +4,7 @@
 
 const mongoose = require("mongoose"); //cargar modulo de mongoose
 const app = require("./app");
+const cors = require('cors');
 
 // Configuración de CORS
 const allowedOrigins = ["https://blog-react-kohl.vercel.app"]; // Agrega tu frontend aquí
