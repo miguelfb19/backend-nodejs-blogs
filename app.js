@@ -6,6 +6,7 @@
 
 let express = require('express')
 let bodyParser = require('body-parser')
+const cors = require('cors');
 
 
 //Ejecutar Express para tabajar con HTTP
@@ -20,6 +21,12 @@ let article_routes = require('./routes/article')
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
+const allowedOrigins = ["https://blog-react-kohl.vercel.app"]; // Agrega tu frontend aquí
+app.use(
+  cors({
+    origin: allowedOrigins,
+  })
+);
 
 //Cargar CORS (para permitir peticiones desde el FrontEnd)
 app.use((req, res, next) => {
