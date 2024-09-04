@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Api RESTful del master en Frameworks para JS de Victor Robles",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
