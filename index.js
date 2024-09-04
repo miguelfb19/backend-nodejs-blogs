@@ -2,9 +2,9 @@
 
 'use strict' //modo estricto de JS
 
-let mongoose = require('mongoose') //cargar modulo de mongoose
-let app = require('./app')
-let port = 3900
+const mongoose = require('mongoose') //cargar modulo de mongoose
+const app = require('./app')
+const port = 3900
 
 mongoose.Promise = global.Promise //uso de promesas para evitar fallos a la hora de conectarnos (funionamiento interno de mongoose)
                                 /*URL mongoDB*/             
