@@ -18,28 +18,28 @@ let article_routes = require("./routes/article");
 
 //Cargar MiddLewares
 
-// const allowedOrigins = ["https://blog-react-kohl.vercel.app"]; // Agrega tu frontend aquí
-// app.use(
-//   cors({
-//     origin: allowedOrigins,
-//     methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//   })
-// );
+const allowedOrigins = ["https://blog-react-kohl.vercel.app"]; // Agrega tu frontend aquí
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //Cargar CORS (para permitir peticiones desde el FrontEnd)
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://blog-react-kohl.vercel.app/");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-  res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "https://blog-react-kohl.vercel.app/");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
+//   );
+//   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+//   res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
+//   next();
+// });
 
 //Añadir prefijos a las rutas / cargar rutas
 app.use("/api", article_routes);
