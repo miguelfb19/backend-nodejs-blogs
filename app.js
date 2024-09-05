@@ -21,9 +21,17 @@ let article_routes = require("./routes/article");
 const allowedOrigins = ["https://blog-react-kohl.vercel.app"]; // Agrega tu frontend aquí
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true); // Permite solicitudes sin origen como las de Postman
+        if (allowedOrigins.indexOf(origin) === -1) {
+          const msg = "El origen CORS no está permitido.";
+          return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+      },
     methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 app.use(bodyParser.urlencoded({ extended: false }));
