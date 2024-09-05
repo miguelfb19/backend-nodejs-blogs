@@ -18,7 +18,7 @@ let article_routes = require("./routes/article");
 
 //Cargar MiddLewares
 
-const allowedOrigins = ["https://blog-react-kohl.vercel.app", "https://blog-vuejs-alpha.vercel.app"]; // Agrega tu frontend aquí
+const allowedOrigins = ["https://blog-react-kohl.vercel.app", "https://blog-vuejs-alpha.vercel.app", "http://localhost:3000"]; // Agrega tu frontend aquí
 app.use(
   cors({
     origin: function (origin, callback) {
