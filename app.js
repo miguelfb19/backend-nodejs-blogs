@@ -16,9 +16,9 @@ let app = express();
 
 let article_routes = require("./routes/article");
 
-//Cargar MiddLewares
+//Configuración de CORS
 
-const allowedOrigins = ["https://blog-react-kohl.vercel.app", "https://blog-vuejs-alpha.vercel.app", "http://localhost:3000"]; // Agrega tu frontend aquí
+const allowedOrigins = ["https://blog-react-kohl.vercel.app", "https://blog-vuejs-alpha.vercel.app", "http://localhost:3000", "http://localhost:5173/"]; // Agrega tu frontend aquí
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -34,6 +34,9 @@ app.use(
     credentials: true,
   })
 );
+
+//Cargar MiddLewares
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
