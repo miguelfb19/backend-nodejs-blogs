@@ -18,7 +18,7 @@ let article_routes = require("./routes/article");
 
 //Configuración de CORS
 
-const allowedOrigins = ["https://blog-react-kohl.vercel.app", "https://blog-vuejs-alpha.vercel.app","http://localhost:5173", "http://localhost:3000"]; // Agrega tu frontend aquí
+const allowedOrigins = ["https://blog-react-kohl.vercel.app", "https://blog-vuejs-alpha.vercel.app","http://localhost:5173", "http://localhost:3000", "http://localhost:4200"]; // Agrega tu frontend aquí
 app.use(
   cors({
     origin: function (origin, callback) {
