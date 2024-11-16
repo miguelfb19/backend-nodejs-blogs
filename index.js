@@ -2,6 +2,7 @@
 
 "use strict"; //modo estricto de JS
 
+require("dotenv").config({ path: ".env" })
 const mongoose = require("mongoose"); //cargar modulo de mongoose
 const app = require("./app");
 
@@ -9,8 +10,11 @@ const app = require("./app");
 
 
 //
+
+const passwordDB = process.env.PASSWORD_DB
+
 const uri =
-  "mongodb+srv://miguelangelfb19:65d26327d2@blog.tq5vo.mongodb.net/api-rest-blog?retryWrites=true&w=majority&appName=blog";
+  `mongodb+srv://miguelangelfb19:${passwordDB}@blog.tq5vo.mongodb.net/api-rest-blog?retryWrites=true&w=majority&appName=blog`
 // const localUri = 'mongodb://localhost:27017/api-rest-blog'
 
 mongoose.Promise = global.Promise; //uso de promesas para evitar fallos a la hora de conectarnos (funionamiento interno de mongoose)

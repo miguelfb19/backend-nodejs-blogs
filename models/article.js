@@ -10,7 +10,7 @@ let Schema = mongoose.Schema
 let ArticleSchema = Schema ({
     title: String,
     content: String,
-    date: {type: Date, default: Date.now}, //default.now me guarda la fecha actual
+    date: {type: Date, default: Date.now}, //Date.now me guarda la fecha actual
     image: String
 })
 
