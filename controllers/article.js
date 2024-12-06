@@ -3,8 +3,6 @@ let validator = require("validator");
 let Article = require("../models/article");
 let fs = require("fs");
 let path = require("path");
-const { exec } = require("child_process");
-const { log } = require("console");
 
 //CREANDO EL CONTROLLER QUE CONTIENE LOS METODOS PARA MI SERVIDOR
 
@@ -84,7 +82,7 @@ let controller = {
           status: "success",
         });
       })
-      .catch((err) => {
+      .catch(() => {
         return res.status(500).send({
           message: "Error al mostrar artículos...",
         });
