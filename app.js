@@ -28,14 +28,7 @@ const allowedOrigins = [
 ]; // Agrega tu frontend aquí
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // Permite solicitudes sin origen como las de Postman
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg = "El origen CORS no está permitido.";
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
+    origin: allowedOrigins,
     methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
