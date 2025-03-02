@@ -103,7 +103,7 @@ let controller = {
 
     //Buscar el articulo
 
-    Article.findById(articleID) //Se usa Promises con then y catch
+    Article.findById(articleID)
       .then((article) => {
         if (!article) {
           return res.status(404).send({
@@ -219,8 +219,6 @@ let controller = {
 
     //Conseguir el nombre y la extension del archivo
     let file_path = req.files.file0.path;
-    console.log('console desde backend');
-    console.log(req.files.file0.path);
     let file_split = file_path.split("/"); //*ADVERTENCIA* EN LINUX O MAC: let file_split = file_path.split('/') EN WINDOWS: let file_split = file_path.split('\\')
 
     //Nombre del fichero
@@ -229,7 +227,7 @@ let controller = {
     let ext_split = file_name.split(".");
     let file_ext = ext_split[1];
 
-    //comprobar la extension, solo imagenes, si no valida borar fichero
+    //comprobar la extension, solo imagenes, si no valida borrar fichero
     if (
       file_ext.toLowerCase() != "png" &&
       file_ext.toLowerCase() != "jpg" &&
@@ -241,6 +239,7 @@ let controller = {
         return res.status(404).json({
           status: "Error",
           message: "Extensión de imagen no válida",
+          error: err
         });
       });
     } else {
