@@ -209,7 +209,7 @@ let controller = {
     if (!req.files) {
       return res.status(404).json({
         status: "Erorr",
-        message: fileName,
+        message: 'No hay imagen',
       });
     }
 
