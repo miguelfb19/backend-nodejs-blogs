@@ -243,7 +243,7 @@ let controller = {
       let articleID = req.params.id;
       // Configurar los parámetros para S3
       const uploadParams = {
-        Bucket: process.env.AWS_BUCKET_NAME,
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: `master-frameworks-blog/${file_name}`,
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
