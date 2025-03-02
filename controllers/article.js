@@ -3,15 +3,14 @@ let validator = require("validator");
 let Article = require("../models/article");
 let fs = require("fs");
 let path = require("path");
+import { s3 } from "../lib/aws-s3-client";
 
 //CREANDO EL CONTROLLER QUE CONTIENE LOS METODOS PARA MI SERVIDOR
 
 let controller = {
-
   save: (req, res) => {
     //recoger parametros por POST
     let params = req.body;
-
     //Validar datos (validator)
     try {
       if (
@@ -26,10 +25,8 @@ let controller = {
         //asignar valores
         article.title = params.title;
         article.content = params.content;
-        if(params.image!='') article.image = params.image;
-        else article.image=null
-        
-        
+        if (params.image != "") article.image = params.image;
+        else article.image = null;
 
         //guardar articulo en la base de datos
         article
@@ -204,11 +201,10 @@ let controller = {
       });
   },
 
-  upload: (req, res) => {
-    //Configurar modulo de connect multiparty router/article.js (HECHO)
+  upload: async (req, res) => {
+    //Configurar modulo de multer en router/article.js (HECHO)
 
     //Recoger fichero de la peticion
-    let fileName = "Imagen no subida";
 
     if (!req.files) {
       return res.status(404).json({
@@ -222,7 +218,7 @@ let controller = {
     let file_split = file_path.split("/"); //*ADVERTENCIA* EN LINUX O MAC: let file_split = file_path.split('/') EN WINDOWS: let file_split = file_path.split('\\')
 
     //Nombre del fichero
-    let file_name = file_split[2];
+    const file_name = `${Date.now()}-${file_split[2]}`;
     //Extension del fichero
     let ext_split = file_name.split(".");
     let file_ext = ext_split[1];
@@ -239,12 +235,22 @@ let controller = {
         return res.status(404).json({
           status: "Error",
           message: "Extensión de imagen no válida",
-          error: err
+          error: err,
         });
       });
     } else {
       //Si todo es valido, buscar articulo y asignar nombre de la imagen y actualizar
       let articleID = req.params.id;
+      // Configurar los parámetros para S3
+      const uploadParams = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: `master-frameworks-blog/${file_name}`,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+      };
+
+      // Subir el archivo a S3
+      await s3.send(new PutObjectCommand(uploadParams));
 
       Article.findOneAndUpdate(
         { _id: articleID },
