@@ -1,8 +1,6 @@
 "use strict";
 let validator = require("validator");
 let Article = require("../models/article");
-let fs = require("fs");
-let path = require("path");
 import { s3 } from "../lib/aws-s3-client";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { imgsBaseUrl } from "../models/imgs-url";
@@ -228,13 +226,11 @@ let controller = {
       file_ext.toLowerCase() != "jpeg" &&
       file_ext.toLowerCase() != "gif"
     ) {
-      //Borrar el archivo
-      fs.unlink(file_path, (err) => {
-        return res.status(404).json({
-          status: "Error",
-          message: "Extensión de imagen no válida",
-          error: err,
-        });
+      //Salir y retornar error
+      return res.status(404).json({
+        status: "Error",
+        message: "Extensión de imagen no válida, artículo guardado sin imagen",
+        error: err,
       });
     } else {
       //Si todo es valido, buscar articulo y asignar nombre de la imagen y actualizar
@@ -248,7 +244,7 @@ let controller = {
       };
 
       // Subir el archivo a S3
-      const s3updated = await s3.send(new PutObjectCommand(uploadParams));
+      await s3.send(new PutObjectCommand(uploadParams));
 
       Article.findOneAndUpdate(
         { _id: articleID },
@@ -282,6 +278,7 @@ let controller = {
 
   getImage: async (req, res) => {
     try {
+      console.log(req);
       const fileName = req.params.image;
       const fileUrl = `${imgsBaseUrl}/${fileName}`;
 
