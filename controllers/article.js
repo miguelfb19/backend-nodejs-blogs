@@ -169,36 +169,34 @@ let controller = {
     }
   },
 
-  delete: (req, res) => {
+  delete: async (req, res) => {
     //Recoger id de la URL
     let articleID = req.params.id;
 
     //Find and delete
 
-    Article.findOneAndDelete({ _id: articleID })
-      .then((articleRemoved) => {
-        if (!articleRemoved) {
-          return res.status(404).json({
-            status: "Error",
-            message: "Error al borrar artículo",
-          });
-        } else {
-          return res.status(200).json({
-            status: "Success",
-            message: "Artículo borrado correctamente",
-            article: articleRemoved,
-          });
-        }
-      })
-      .catch((err) => {
-        if (err) {
-          return res.status(500).send({
-            status: "error",
-            message: "Error en la petición al API",
-            err,
-          });
-        }
+    try {
+      const articleRemoved = await Article.findOneAndDelete({ _id: articleID });
+      console.log(articleRemoved);
+      if (!articleRemoved) {
+        return res.status(404).json({
+          status: "Error",
+          message: "Error al borrar artículo",
+        });
+      }
+
+      return res.status(200).json({
+        status: "Success",
+        message: "Artículo borrado correctamente",
+        article: articleRemoved,
       });
+    } catch (error) {
+      return res.status(500).send({
+        status: "error",
+        message: "Error en la petición al API",
+        err,
+      });
+    }
   },
 
   upload: async (req, res) => {
