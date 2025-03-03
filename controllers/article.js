@@ -4,6 +4,7 @@ let Article = require("../models/article");
 import { s3 } from "../lib/aws-s3-client";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { imgsBaseUrl } from "../models/imgs-url";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 //CREANDO EL CONTROLLER QUE CONTIENE LOS METODOS PARA MI SERVIDOR
 
@@ -184,6 +185,15 @@ let controller = {
           message: "Error al borrar artículo",
         });
       }
+
+      const s3removed = s3.send(
+        new DeleteObjectCommand({
+          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Key: `master-frameworks-blog/${articleRemoved.image}`,
+        })
+      );
+
+      console.log(s3removed)
 
       return res.status(200).json({
         status: "Success",
