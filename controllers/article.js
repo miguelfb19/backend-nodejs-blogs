@@ -207,7 +207,7 @@ let controller = {
     console.log({req})
     
     //Recoger fichero de la peticion
-    if (!req.files) {
+    if (!req.file) {
       return res.status(404).json({
         status: "Error",
         message: 'No hay imagen',
@@ -215,18 +215,15 @@ let controller = {
     }
 
     //Conseguir el nombre y la extension del archivo
-    let file_path = req.files.file0.path;
-    let file_split = file_path.split("/"); //*ADVERTENCIA* EN LINUX O MAC: let file_split = file_path.split('/') EN WINDOWS: let file_split = file_path.split('\\')
 
     console.log({file_path})
     //Nombre del fichero
-    const file_name = `${Date.now()}-${file_split[2]}`;
+    const file_name = `_date_${Date.now()}_name_${req.file.originalname}`;
 
     console.log({file_name})
     //Extension del fichero
-    let ext_split = file_name.split(".");
-    let file_ext = ext_split[1];
-
+    let file_ext = req.file.mimetype.split("/")[1];
+    console.log({file_ext})
     //comprobar la extension, solo imagenes, si no valida borrar fichero
     if (
       file_ext.toLowerCase() != "png" &&
@@ -253,15 +250,10 @@ let controller = {
         ContentType: req.file.mimetype,
       };
 
-      console.log({req})
-
       // Subir el archivo a S3
-      await s3.send(new PutObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
-        Key: `master-frameworks-blog/${file_name}`,
-        Body: req.file.buffer,
-        ContentType: req.file.mimetype,
-      }));
+      const s3updated = await s3.send(new PutObjectCommand(uploadParams));
+
+      console.log({s3updated})
 
       console.log('Se subio a s3')
 
