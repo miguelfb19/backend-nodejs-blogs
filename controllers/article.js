@@ -204,8 +204,9 @@ let controller = {
   upload: async (req, res) => {
     //Configurar modulo de multer en router/article.js (HECHO)
 
+    console.log(req.files)
+    
     //Recoger fichero de la peticion
-
     if (!req.files) {
       return res.status(404).json({
         status: "Erorr",
@@ -217,8 +218,11 @@ let controller = {
     let file_path = req.files.file0.path;
     let file_split = file_path.split("/"); //*ADVERTENCIA* EN LINUX O MAC: let file_split = file_path.split('/') EN WINDOWS: let file_split = file_path.split('\\')
 
+    console.log({file_path})
     //Nombre del fichero
     const file_name = `${Date.now()}-${file_split[2]}`;
+
+    console.log({file_name})
     //Extension del fichero
     let ext_split = file_name.split(".");
     let file_ext = ext_split[1];
@@ -249,8 +253,17 @@ let controller = {
         ContentType: req.file.mimetype,
       };
 
+      console.log({req})
+
       // Subir el archivo a S3
-      await s3.send(new PutObjectCommand(uploadParams));
+      await s3.send(new PutObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `master-frameworks-blog/${file_name}`,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+      }));
+
+      console.log('Se subio a s3')
 
       Article.findOneAndUpdate(
         { _id: articleID },
