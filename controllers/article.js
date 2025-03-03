@@ -177,15 +177,19 @@ let controller = {
     //Find and delete
 
     try {
+
+      // Metodo de moongose para eliminar el articulo, devuelve el articulo borrado con sus datos
       const articleRemoved = await Article.findOneAndDelete({ _id: articleID });
-      console.log(articleRemoved);
+      
+      // Si no retorna nada es que el articulo no existe
       if (!articleRemoved) {
         return res.status(404).json({
           status: "Error",
-          message: "Error al borrar artículo",
+          message: "Artículo no existe o ya fue eliminado",
         });
       }
 
+      // Eliminar imagen de AWS s3
       const s3removed = s3.send(
         new DeleteObjectCommand({
           Bucket: process.env.AWS_S3_BUCKET_NAME,
