@@ -4,6 +4,7 @@ let Article = require("../models/article");
 let fs = require("fs");
 let path = require("path");
 import { s3 } from "../lib/aws-s3-client";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 //CREANDO EL CONTROLLER QUE CONTIENE LOS METODOS PARA MI SERVIDOR
 
