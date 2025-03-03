@@ -5,6 +5,7 @@ let fs = require("fs");
 let path = require("path");
 import { s3 } from "../lib/aws-s3-client";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { imgsBaseUrl } from "../models/imgs-url";
 
 //CREANDO EL CONTROLLER QUE CONTIENE LOS METODOS PARA MI SERVIDOR
 
@@ -205,13 +206,11 @@ let controller = {
   upload: async (req, res) => {
     //Configurar modulo de multer en router/article.js (HECHO)
 
-    console.log({req})
-    
     //Recoger fichero de la peticion
     if (!req.file) {
       return res.status(404).json({
         status: "Error",
-        message: 'No hay imagen',
+        message: "No hay imagen",
       });
     }
 
@@ -219,10 +218,9 @@ let controller = {
     //Nombre del fichero
     const file_name = `_date_${Date.now()}_name_${req.file.originalname}`;
 
-    console.log({file_name})
     //Extension del fichero
     let file_ext = req.file.mimetype.split("/")[1];
-    console.log({file_ext})
+
     //comprobar la extension, solo imagenes, si no valida borrar fichero
     if (
       file_ext.toLowerCase() != "png" &&
@@ -251,9 +249,6 @@ let controller = {
 
       // Subir el archivo a S3
       const s3updated = await s3.send(new PutObjectCommand(uploadParams));
-
-      console.log('Se subio a s3')
-      console.log({s3updated})
 
       Article.findOneAndUpdate(
         { _id: articleID },
@@ -285,20 +280,22 @@ let controller = {
     }
   },
 
-  getImage: (req, res) => {
-    let file = req.params.image;
-    let path_file = "./upload/articles/" + file;
+  getImage: async (req, res) => {
+    try {
+      const fileName = req.params.image;
+      const fileUrl = `${imgsBaseUrl}/${fileName}`;
 
-    fs.exists(path_file, (exists) => {
-      if (exists) {
-        return res.sendFile(path.resolve(path_file));
-      } else {
-        return res.status(404).json({
-          status: "Error",
-          message: "La imagen no existe",
-        });
-      }
-    });
+      return res.status(200).json({
+        status: "Success",
+        fileUrl,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "Error",
+        message: "Error al obtener la imagen",
+        error,
+      });
+    }
   },
 
   search: (req, res) => {
