@@ -204,12 +204,12 @@ let controller = {
   upload: async (req, res) => {
     //Configurar modulo de multer en router/article.js (HECHO)
 
-    console.log(req.files)
+    console.log({req})
     
     //Recoger fichero de la peticion
     if (!req.files) {
       return res.status(404).json({
-        status: "Erorr",
+        status: "Error",
         message: 'No hay imagen',
       });
     }
