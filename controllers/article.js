@@ -197,8 +197,6 @@ let controller = {
         })
       );
 
-      console.log(s3removed)
-
       return res.status(200).json({
         status: "Success",
         message: "Artículo borrado correctamente",
