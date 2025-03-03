@@ -215,8 +215,6 @@ let controller = {
     }
 
     //Conseguir el nombre y la extension del archivo
-
-    console.log({file_path})
     //Nombre del fichero
     const file_name = `_date_${Date.now()}_name_${req.file.originalname}`;
 
@@ -253,9 +251,8 @@ let controller = {
       // Subir el archivo a S3
       const s3updated = await s3.send(new PutObjectCommand(uploadParams));
 
-      console.log({s3updated})
-
       console.log('Se subio a s3')
+      console.log({s3updated})
 
       Article.findOneAndUpdate(
         { _id: articleID },
