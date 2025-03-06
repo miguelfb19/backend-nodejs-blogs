@@ -170,12 +170,13 @@ let controller = {
     }
   },
 
+  
+
   delete: async (req, res) => {
     //Recoger id de la URL
     let articleID = req.params.id;
 
     //Find and delete
-
     try {
       // Metodo de moongose para eliminar el articulo, devuelve el articulo borrado con sus datos
       const articleRemoved = await Article.findOneAndDelete({ _id: articleID });
